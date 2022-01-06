@@ -1,0 +1,1 @@
+enum LaunchpadModes {Session, Custom1, Custom2, Custom3, Faders};

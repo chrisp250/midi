@@ -1,9 +1,22 @@
 // Controller module for launchpad
 #include <arduino.h>
+#include <usbh_midi.h>
+#include <usbhub.h>
+#include <MIDI.h>
+
+#include "launchpad_midi.h"
 
 class LaunchpadController {
     uint8_t test;
-  
+  public:
+
+    LaunchpadController(USBH_MIDI *eMidi) {
+        if (eMidi == NULL) {
+            return;
+        }
+        Midi=eMidi;
+    }
+
   private:
     //Switch DAW mode on message
     uint8_t daw_mode[9] = {0xf0,0x00,0x20, 0x29, 0x02, 0x0d, 0x10, 0x01, 0xf7};
@@ -13,6 +26,6 @@ class LaunchpadController {
     const uint8_t onBlack[64] = {0x00, 0x4f, 0x4f, 0x00, 0x4f, 0x4f, 0x4f, 0x00};
     const uint8_t defaultPad[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x14,0x52, 0x4f, 0xf7};
     const uint8_t lighton[11] =     {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x03, 0x00, 0x0b, 0x0d, 0xf7};
-
+    USBH_MIDI *Midi;
 
 };
