@@ -6,11 +6,16 @@
 
 #include "launchpad_midi.h"
 
+void LaunchpadController::Initialise() {
+    USBMidi->SendSysEx(daw_mode,sizeof(daw_mode));
+    return;
+}
+
+//Set launchpad to DAW mode and draw initial setup-
 LaunchpadController::LaunchpadController(USBH_MIDI *eMidi) {
     if (eMidi == NULL) {
         return;
     }
-    Midi=eMidi;
+    USBMidi=eMidi;
     SequencerState=Stop;
 }
-

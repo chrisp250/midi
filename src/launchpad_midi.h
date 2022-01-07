@@ -5,6 +5,8 @@ class LaunchpadController {
     public:
         LaunchpadController(USBH_MIDI *Midi1);
         void Task();
+        //Set launchpad to DAW mode and draw initial setup
+        void Initialise(void);
     private:
         //Switch DAW mode on message
         uint8_t daw_mode[9] = {0xf0,0x00,0x20, 0x29, 0x02, 0x0d, 0x10, 0x01, 0xf7};
@@ -15,7 +17,7 @@ class LaunchpadController {
         const uint8_t defaultPad[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x14,0x52, 0x4f, 0xf7};
         const uint8_t lighton[11] =     {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x03, 0x00, 0x0b, 0x0d, 0xf7};
         const uint8_t RowStart[8] = {0x0b, 0x15, 0x1f, 0x29, 0x33, 0x3d, 0x47, 0x51};
-        USBH_MIDI *Midi;
+        USBH_MIDI *USBMidi;
         SequencerMode SequencerState;
 
 };

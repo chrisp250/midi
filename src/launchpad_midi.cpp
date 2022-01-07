@@ -43,76 +43,6 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, SMIDI);
 
 void MIDI_poll();
 
-void seqMode(void) {
-
-  uint8_t onWhite[64] = {0x52, 0x4f, 0x4f, 0x4f, 0x4f, 0x4f, 0x4f, 0x52};
-  uint8_t onBlack[64] = {0x00, 0x4f, 0x4f, 0x00, 0x4f, 0x4f, 0x4f, 0x00};
-  uint8_t defaultPad[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x14,0x52, 0x4f, 0xf7};
-  uint8_t lighton[11] =     {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x03, 0x00, 0x0b, 0x0d, 0xf7};
-  //uint8_t programMode[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x0e, 0x01, 0xf7};
-  uint8_t programMode[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x00, 0x7f, 0xf7};
-
-  uint8_t msg[3] = {0x90, 0x24, 0x4f};
-  Midi1.SendData(msg,1);
-  uint8_t msg1[3] = {0xb0, 0x1d, 0x52};
-  //Midi1.SendData(msg1,0);
-
-  delay(3000);
-  const uint8_t device_inq[6] = {0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7};
-
-  uint8_t daw_mode[9] = {0xf0,0x00,0x20, 0x29, 0x02, 0x0d, 0x10, 0x00, 0xf7}; // disable DAW Mode
-  //uint8_t msg1[20] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x12, 0x01, 0x00, 0x01, 0xF7};
-  //Midi1.SendSysEx(daw_mode,sizeof(daw_mode),1);
-  //Midi1.SendData(device_inq, 1);
-  //Midi1.SendSysEx(device_inq,sizeof(device_inq));
-  //Midi1.SendSysEx(defaultPad,sizeof(defaultPad));
-  //Midi1.SendSysEx(programMode,sizeof(programMode),1);
-  //Midi1.SendSysEx(lighton,sizeof(lighton),1);
-
-//  uint8_t count=0, key;
-
-/*
-  for (key=0x0b;key<0x13;key++) {
-    msg[1]=key;
-    msg[2]=onWhite[count];
-    Midi1.SendData(msg);
-    count++;
-  }
-*/
-/*
-  count=0;
-  for (key=0x15;key<0x1d;key++) {
-    msg[1]=key;
-    msg[2]=onBlack[count];
-    Midi1.SendData(msg);
-    count++;
-  }
-
-  count=0;
-  for (key=0x1f;key<0x27;key++) {
-    msg[1]=key;
-    msg[2]=onWhite[count];
-    Midi1.SendData(msg);
-    count++;
-  }
-
-  count=0;
-  for (key=0x29;key<0x31;key++) {
-    msg[1]=key;
-    msg[2]=onBlack[count];
-    Midi1.SendData(msg);
-    count++;
-  }
-
-  for (key=0x33;key<0x3b;key++) {
-    msg[1]=key;
-    msg[2]=0x58;
-    Midi1.SendData(msg);
-    count++;
-  }
-*/
-
-}
 
 void onInit()
 {
@@ -123,6 +53,7 @@ void onInit()
   uint8_t programMode[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x00, 0x7f, 0xf7};
 
   delay(500);
+  lp_controller.Initialise();
   //Serial.printf("Sending SysEx...");
   //Midi1.SendSysEx(device_inq, sizeof(device_inq),0);
   Midi1.SendSysEx(daw_mode, sizeof(daw_mode),0);
@@ -132,7 +63,6 @@ void onInit()
   if ( Midi1 ) {
     Serial.printf("Got it\n");
   }
-  seqMode();
 }
 
 void turnOn(uint8_t key, uint8_t state) {
