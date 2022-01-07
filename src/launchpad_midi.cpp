@@ -16,6 +16,8 @@
 #include <usbhub.h>
 #include <MIDI.h>
 
+#include "launchpad_midi.h"
+
 #ifdef USBCON
 #define _MIDI_SERIAL_PORT Serial1
 #else
@@ -36,6 +38,8 @@
 USB Usb;
 USBH_MIDI  Midi1(&Usb);
 USBH_MIDI  Midi2(&Usb);
+LaunchpadController lp_controller(&Midi1);
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, SMIDI);
 
 void MIDI_poll();
 
@@ -149,19 +153,13 @@ void turnOn(uint8_t key, uint8_t state) {
 
 void setup()
 {
-  // DAW mode
-  // F0h 00h 20h 29h 02h 0Dh 10h <mode> F7h
-  // mode 0 = Stand alone  1 = DAW
-
-  const uint8_t daw_mode[9]= {0xf0,0x00,0x20, 0x29, 0x02, 0x0d, 0x10, 0x01, 0xf7};
-  const uint8_t device_inq[6] = {0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7};
 
   Serial.begin( 115200 );
 #if !defined(__MIPSEL__)
   while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 #endif
   Serial.printf("Start...");
-
+  SMIDI.begin();
   //_MIDI_SERIAL_PORT.begin(31250);
   
   if (Usb.Init() == -1) {
