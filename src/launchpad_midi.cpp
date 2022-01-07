@@ -46,40 +46,13 @@ void MIDI_poll();
 
 void onInit()
 {
-  //Switch DAW mode on
-  uint8_t daw_mode[9] = {0xf0,0x00,0x20, 0x29, 0x02, 0x0d, 0x10, 0x01, 0xf7};
-  //Device Inquire
-  uint8_t device_inq[6] = {0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7};
-  uint8_t programMode[10] = {0xF0, 0x00, 0x20, 0x29, 0x02, 0x0D, 0x00, 0x7f, 0xf7};
-
   delay(500);
   lp_controller.Initialise();
-  //Serial.printf("Sending SysEx...");
-  //Midi1.SendSysEx(device_inq, sizeof(device_inq),0);
-  Midi1.SendSysEx(daw_mode, sizeof(daw_mode),0);
-  //Midi1.SendSysEx(programMode, sizeof(programMode),0);
-
   delay(500);
   if ( Midi1 ) {
     Serial.printf("Got it\n");
   }
 }
-
-void turnOn(uint8_t key, uint8_t state) {
-
-  uint8_t on[3] = {0x90, key};
-
-  if (state == 0) {
-  //Serial.printf("Sending light change\n");
-    on[2]=0x00;
-    Midi1.SendData(on);
-  } else {
-    on[2]=0x4f;
-    Midi1.SendData(on);
-  }
-
-}
-
 
 void setup()
 {
@@ -122,7 +95,8 @@ void MIDI_poll()
   //Serial.printf("Polling\n");
   do {
     if ( (size = Midi1.RecvData(outBuf,true)) > 0 ) {
-      Serial.printf("Byte: (s)%d, %x, %x, %x, %x\n",size, outBuf[0],outBuf[1],outBuf[2],outBuf[3]);
+      lp_controller.ProcessInput(size,outBuf);
+      //Serial.printf("Byte: (s)%d, %x, %x, %x, %x\n",size, outBuf[0],outBuf[1],outBuf[2],outBuf[3]);
       if (outBuf[1] == 0x90) {
         //turnOn(outBuf[2], outBuf[3]);
       }
