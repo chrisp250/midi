@@ -1,28 +1,21 @@
+
 // Track definition
 #include <arduino.h>
 
-#define TRACK_STEPS 32
+#include "track.h"
 
-class TrackNote {
-        uint8_t note[TRACK_STEPS];
-        uint8_t duration[TRACK_STEPS];
-        uint8_t veloticy[TRACK_STEPS];
+void MidiTrack::add_note(uint8_t step , TrackNote note) {
 
-};
+}
 
-class track {
-    TrackNote note[32];
+void MidiTrack::remote_note(uint8_t step, TrackNote note) {
 
-    public:
-        void add_note(uint8_t step, TrackNote note) {
+}
 
-        }
+void MidiTrack::get_note(uint8_t step, TrackNote note) {
 
-        void remote_note(uint8_t step, TrackNote note) {
+}
 
-        }
+MidiTrack::MidiTrack() {
 
-        void get_note(uint8_t step, TrackNote note) {
-
-        }
-};
+}

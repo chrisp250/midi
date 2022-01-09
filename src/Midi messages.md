@@ -1,6 +1,6 @@
 # Launchpad / Launch key protocol
 
-Terminal set up  
+Terminal set up (Perl)
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
 
 ## Device query
@@ -20,6 +20,20 @@ All commands to be sent on the DAW midi interface
 
 **Exit DAW mode**  
 9Fh 0Ch 00h (port 16)
+
+# Key values
+| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | C |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| CC 0x5b |
+| 0x51 |
+| 0x47 |
+| 0x3d |
+| 0x33 |
+| 0x29 |
+| 0x1f | 0x20 | 0x21 | 0x22 | 0x23 | 0x24 | 0x25 | 0x26 | CC 0x27 | 
+| 0x15 | 0x16 | 0x17 | 0x18 | 0x19 | 0x1a | 0x1b | 0x1c | CC 0x1d |
+| 0x0b | 0x0c | 0x0d | 0x0e | 0x0f | 0x10 | 0x11 | 0x12 | CC 0x13 |
+
 
 #
 #Device identification

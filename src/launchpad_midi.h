@@ -4,8 +4,14 @@ enum SequencerMode {Stop, Play, Record};
 #define LowC 24 // First key of the keyboard
 #define MONITOR_SMIDI //Turn on Serial MIDI monitoring
 
+#define TRACK_NUMBER 4 // Start with 4 tracks
+#define TRACK_STEPS 32 // Steps per track
 
 
+
+
+
+// Main controller for the Launchpad
 class LaunchpadController {
     public:
         LaunchpadController(USBH_MIDI *);
