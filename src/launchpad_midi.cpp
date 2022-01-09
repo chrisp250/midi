@@ -16,6 +16,7 @@
 #include <usbhub.h>
 #include <MIDI.h>
 
+
 #include "launchpad_midi.h"
 
 #ifdef USBCON
@@ -38,11 +39,18 @@
 USB Usb;
 USBH_MIDI  Midi1(&Usb);
 USBH_MIDI  Midi2(&Usb);
-LaunchpadController lp_controller(&Midi1);
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, SMIDI);
+LaunchpadController lp_controller(&Midi1);
 
 void MIDI_poll();
 
+// Send a MIDI note over Serial DIN
+void SendNote(uint8_t note, uint8_t velocity,uint8_t channel=0) {
+#ifdef MONITOR_SMIDI
+  Serial.printf("Send serial MIDI: n%d, v%d, c%d\n", note, velocity, channel);
+#endif
+  SMIDI.sendNoteOn(note,velocity,channel);
+}
 
 void onInit()
 {
@@ -57,9 +65,10 @@ void onInit()
 void setup()
 {
 
+  delay(2000);
   Serial.begin( 115200 );
 #if !defined(__MIPSEL__)
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  //while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 #endif
   Serial.printf("Start...");
   SMIDI.begin();
@@ -73,6 +82,7 @@ void setup()
   Serial.printf("init..\n");
   //Midi1.SendData(device_inq);
   Midi1.attachOnInit(onInit);
+  lp_controller.attachSendMIDI(SendNote);
 }
 
 void loop()
@@ -84,6 +94,7 @@ void loop()
   }
   //delay(1ms) if you want
   //delayMicroseconds(1000);
+  
 }
 
 // Poll USB MIDI Controler and send to serial MIDI
